@@ -10,12 +10,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { DataService } from './service/data.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableListComponent,
-    TodoListComponent
+    TodoListComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -24,9 +27,13 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     InMemoryWebApiModule.forRoot(DataService),
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
   ],
   providers: [],
+  entryComponents: [
+    DialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

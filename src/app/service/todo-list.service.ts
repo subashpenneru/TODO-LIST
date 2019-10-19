@@ -23,4 +23,8 @@ export class TodoListService {
   deleteTodoList(listId) {
     return this.http.delete(this.url + '/' + listId);
   }
+
+  updateTodoList(listId, data) {
+    return this.http.put(this.url + `/${listId}`, data);
+  }
 }

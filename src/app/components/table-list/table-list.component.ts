@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { TodoListService } from 'src/app/service/todo-list.service';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-table-list',
@@ -9,12 +11,12 @@ import * as moment from 'moment';
 })
 export class TableListComponent implements OnInit {
 
-  public displayedColumns: string[] = ['id', 'task', 'date', 'action'];
+  public displayedColumns: string[] = ['id', 'task', 'date', 'action', 'edit'];
   dataSource: TODOLIST[];
   public listId: number;
   public isLoadingResults = true;
 
-  constructor(private listServ: TodoListService) { }
+  constructor(private listServ: TodoListService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getTodo();
@@ -25,10 +27,9 @@ export class TableListComponent implements OnInit {
     this.listServ.getTodoList().subscribe((res: TODOLIST[]) => {
       res.forEach(e => {
         this.listId = e.id;
-        e.date = moment(e.date).format('DD-MM-YYYY');
+        e.date = moment(e.date).format('YYYY-MM-DD');
       })
       this.listServ.listID.next(this.listId);
-      console.log(res)
       this.dataSource = res;
       this.isLoadingResults = false;
     }, error => console.log(error));
@@ -39,6 +40,21 @@ export class TableListComponent implements OnInit {
     this.listServ.deleteTodoList(listData.id).subscribe((res) => {
       this.getTodo();
     }, err => console.log(err));
+  }
+
+  openDialog(listData: TODOLIST) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: { id: listData.id, task: listData.task, date: listData.date }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.listServ.updateTodoList(result.id, result).subscribe(res => {
+          this.getTodo();
+        }, err => console.log(err))
+      }
+    })
   }
 }
 

@@ -1,0 +1,29 @@
+<div>
+    <div mat-dialog-content>
+        <p>Update the Todo-List</p>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Task</mat-label>
+                <input 
+                    matInput 
+                    placeholder="Add Task" 
+                    [(ngModel)]="data.task">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input 
+                    matInput 
+                    [matDatepicker]="picker" 
+                    placeholder="Choose a date" 
+                    [(ngModel)]="data.date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="closeDialogForm()">Close</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    </div>
+</div>

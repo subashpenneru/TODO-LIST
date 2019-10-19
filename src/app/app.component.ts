@@ -19,16 +19,14 @@ export class AppComponent {
     let element = {
       id: this.listServ.listID.getValue() + 1,
       task: event.task,
-      date: moment(event.date).format('MM-DD-YYYY')
+      date: moment(event.date).format('YYYY-MM-DD')
     }
-    console.log(element);
     this.postTodoListData(element);
   }
 
   postTodoListData(list) {
     this.listServ.createTodoList(list).subscribe(res => {
       this.tableList.getTodo();
-      console.log(res)
     }, err => {
       console.log(err);
     })
