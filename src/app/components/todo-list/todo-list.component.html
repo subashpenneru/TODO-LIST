@@ -1,0 +1,38 @@
+<mat-grid-list cols="3" rowHeight="1:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile class="list-grid-tile">
+        <form [formGroup]="listForm">
+            <div class="todo-list-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Task</mat-label>
+                    <input 
+                        matInput 
+                        placeholder="Add Task"
+                        formControlName="task"
+                        #listTask>
+                  </mat-form-field>
+            </div>
+            <div class="todo-list-form">
+                <mat-form-field>
+                    <input 
+                        matInput 
+                        [matDatepicker]="picker" 
+                        placeholder="Choose a date"
+                        formControlName="date"
+                        #listDate>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div>
+                <button 
+                    mat-raised-button 
+                    color="primary"
+                    [disabled]="!listForm.valid"
+                    (click)="onAddList()">Add</button>
+                <button style="margin-left: 20px;" mat-raised-button (click)="resetForm()">Reset</button>
+            </div>
+        </form>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>
