@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { TodoListService } from 'src/app/service/todo-list.service';
 import * as moment from 'moment';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatSort } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -12,14 +12,16 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class TableListComponent implements OnInit {
 
   public displayedColumns: string[] = ['id', 'task', 'date', 'action', 'edit'];
-  dataSource: TODOLIST[];
+  dataSource = new MatTableDataSource(_TODOLIST);
   public listId: number;
   public isLoadingResults = true;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private listServ: TodoListService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getTodo();
+    this.dataSource.sort = this.sort;
   }
 
   getTodo() {
@@ -30,7 +32,7 @@ export class TableListComponent implements OnInit {
         e.date = moment(e.date).format('YYYY-MM-DD');
       })
       this.listServ.listID.next(this.listId);
-      this.dataSource = res;
+      this.dataSource.data = res;
       this.isLoadingResults = false;
     }, error => console.log(error));
   }
@@ -56,6 +58,10 @@ export class TableListComponent implements OnInit {
       }
     })
   }
+
+  applyFilter(event: string) {
+    this.dataSource.filter = event.trim().toLowerCase();
+  }
 }
 
 export interface TODOLIST {
@@ -63,3 +69,7 @@ export interface TODOLIST {
   task: string,
   date: string
 }
+
+export const _TODOLIST:Array<TODOLIST> = [
+  {id: 1, task: '', date: ''}
+]
